@@ -28,8 +28,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * AliasWorldParameter
@@ -53,7 +53,13 @@ public class AliasWorldParameter extends ArgumentResolver<CommandSender, World> 
   @Override
   public SuggestionResult suggest(final Invocation<CommandSender> invocation, final Argument<World> argument, final SuggestionContext context) {
 
-    final List<String> worlds = new ArrayList<>(PhantomWorlds.worldManager().aliases.keySet());
+    final Set<String> worlds = new LinkedHashSet<>();
+
+    PhantomWorlds.worldManager().aliases.forEach((alias, worldName)->{
+      if(Bukkit.getWorld(worldName) != null) {
+        worlds.add(alias);
+      }
+    });
 
     for(final World world : Bukkit.getWorlds()) {
       worlds.add(world.getName());

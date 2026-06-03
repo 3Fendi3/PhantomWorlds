@@ -15,8 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -35,6 +37,8 @@ public class WorldManager {
 
   public final Map<UUID, MultiMessage> tpAwaiting = new LinkedHashMap<>();
 
+  private final WorldDataCleaner dataCleaner = new WorldDataCleaner();
+
   /**
    * For all worlds listed in PW's data file, if they aren't already loaded by Bukkit, then tell
    * Bukkit to load them
@@ -51,9 +55,17 @@ public class WorldManager {
 
     final HashSet<String> worldsToDiscardFromDataFile = new HashSet<>();
 
+    final File worldContainer = Bukkit.getWorldContainer();
+
     //This should be outside our for each
-    if(!Bukkit.getWorldContainer().exists()) {
+    if(!worldContainer.exists()) {
       PhantomWorlds.logger().severe("World container doesn't exist!");
+      return;
+    }
+
+    cleanMissingWorldsFromData(worldContainer);
+
+    if(!PhantomWorlds.instance().data.getConfig().isConfigurationSection("worlds-to-load")) {
       return;
     }
 
@@ -79,6 +91,38 @@ public class WorldManager {
     for(final String worldName : worldsToDiscardFromDataFile) {
       PhantomWorlds.instance().data.getConfig().set("worlds-to-load." + worldName, null);
     }
+
+    try {
+      PhantomWorlds.instance().data.save();
+    } catch(final IOException ex) {
+      PhantomWorlds.logger().severe("Unable to save data file. Stack trace:");
+      ex.printStackTrace();
+    }
+  }
+
+  public void cleanMissingWorldsFromData(final File worldContainer) {
+
+    if(PhantomWorlds.instance().settings.getConfig().getBoolean("regenerate-missing-worlds", false)
+       || !PhantomWorlds.instance().data.getConfig().isConfigurationSection("worlds-to-load")) {
+      return;
+    }
+
+    final Collection<String> worldNames = new LinkedHashSet<>(
+            PhantomWorlds.instance().data.getConfig()
+                    .getConfigurationSection("worlds-to-load")
+                    .getKeys(false)
+    );
+    final Collection<String> missingWorlds = dataCleaner.findMissingWorlds(worldNames, worldContainer);
+
+    if(missingWorlds.isEmpty()) {
+      return;
+    }
+
+    for(final String worldName : missingWorlds) {
+      PhantomWorlds.instance().data.getConfig().set("worlds-to-load." + worldName, null);
+    }
+
+    PhantomWorlds.logger().info("Removed missing world data entries: " + String.join(", ", missingWorlds));
 
     try {
       PhantomWorlds.instance().data.save();

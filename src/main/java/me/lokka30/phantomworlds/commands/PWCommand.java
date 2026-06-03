@@ -30,6 +30,7 @@ import me.lokka30.phantomworlds.commands.sub.CopyCommand;
 import me.lokka30.phantomworlds.commands.sub.CreateCommand;
 import me.lokka30.phantomworlds.commands.sub.DebugCommand;
 import me.lokka30.phantomworlds.commands.sub.DeleteCommand;
+import me.lokka30.phantomworlds.commands.sub.EmptyWorldCommand;
 import me.lokka30.phantomworlds.commands.sub.ImportCommand;
 import me.lokka30.phantomworlds.commands.sub.InfoCommand;
 import me.lokka30.phantomworlds.commands.sub.ListCommand;
@@ -82,9 +83,17 @@ public class PWCommand {
   @Execute(name = "copy")
   @Permission("phantomworlds.command.phantomworlds.copy")
   @Description("command.phantomworlds.help.copy")
-  public void copy(@Context final CommandSender commandSender, @Arg("world name") final String newWorld, @OptionalArg("world folder") final WorldFolder world) {
+  public void copy(@Context final CommandSender commandSender, @Arg("world name") final String newWorld, @OptionalArg("world") final World world) {
 
     CopyCommand.onCommand(commandSender, newWorld, world);
+  }
+
+  @Execute(name = "emptyworld")
+  @Permission("phantomworlds.command.phantomworlds.emptyworld")
+  @Description("command.phantomworlds.help.emptyworld")
+  public void emptyWorld(@Context final CommandSender commandSender, @Arg("world name") final String name) {
+
+    EmptyWorldCommand.onCommand(commandSender, name);
   }
 
   @Execute(name = "compatibility")

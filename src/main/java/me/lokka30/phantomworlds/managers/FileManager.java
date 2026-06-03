@@ -41,6 +41,7 @@ public class FileManager {
           break;
         case DATA:
           migrate(pwFile, PhantomWorlds.instance().data.getConfig().getInt("advanced.file-version"));
+          PhantomWorlds.instance().worldManager.cleanMissingWorldsFromData(Bukkit.getWorldContainer());
           break;
         default:
           break;

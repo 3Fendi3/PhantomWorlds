@@ -25,6 +25,7 @@ command:
     usage:
       - '%prefix% Available commands:'
       - '&8 &m->&b /%label% create &8- &7create a world'
+      - '&8 &m->&b /%label% emptyworld <world> &8- &7create an empty void world'
       - '&8 &m->&b /%label% copy <new world> <world> &8- &7copy a world'
       - '&8 &m->&b /%label% import &8- &7import a world'
       - '&8 &m->&b /%label% list &8- &7list loaded worlds'
@@ -49,6 +50,7 @@ command:
 
     help:
       create: '&b/pw create <world> <environment> [options...] &8- &7create a world'
+      emptyworld: '&b/pw emptyworld <world> &8- &7create an empty void world'
       copy: '&b/pw copy <new world> <world> &8- &7copy a world'
       import: '&b/pw import <world> &8- &7import a world'
       list: '&b/pw list &8- &7list worlds'

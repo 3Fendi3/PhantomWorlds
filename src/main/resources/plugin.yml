@@ -5,13 +5,13 @@
 # /     /    | `.__/| /    |  \__/  `._.' /   '   / |,'  \,'    `._.' /     /\__ `___,' \___.'
 
 name: 'PhantomWorlds'
-version: '2.1.0'
-description: 'The Robust World Manager for Minecraft Servers'
+version: '3.0.0'
+description: 'The Robust World Manager for Minecraft Servers (forked by 3Fendi3 (https://github.com/3Fendi3/PhantomWorlds)'
 authors: [ 'creatorfromhell', 'lokka30' ]
 website: 'https://github.com/lokka30/PhantomWorlds'
 
 main: 'me.lokka30.phantomworlds.PhantomWorlds'
-api-version: '1.13'
+api-version: '1.21'
 load: STARTUP
 #Has to be included for folia support
 folia-supported: true
@@ -48,8 +48,11 @@ permissions:
       phantomworlds.command.phantomworlds: true
       phantomworlds.command.phantomworlds.backup: true
       phantomworlds.command.phantomworlds.compatibility: true
+      phantomworlds.command.phantomworlds.copy: true
       phantomworlds.command.phantomworlds.create: true
       phantomworlds.command.phantomworlds.debug: true
+      phantomworlds.command.phantomworlds.delete: true
+      phantomworlds.command.phantomworlds.emptyworld: true
       phantomworlds.command.phantomworlds.import: true
       phantomworlds.command.phantomworlds.info: true
       phantomworlds.command.phantomworlds.list: true
@@ -59,8 +62,10 @@ permissions:
       phantomworlds.command.phantomworlds.set.effects: true
       phantomworlds.command.phantomworlds.set.gamemode: true
       phantomworlds.command.phantomworlds.set.portal: true
+      phantomworlds.command.phantomworlds.set.transfer: true
       phantomworlds.command.phantomworlds.set.whitelist: true
       phantomworlds.command.phantomworlds.teleport: true
+      phantomworlds.command.phantomworlds.teleport.other: true
       phantomworlds.command.phantomworlds.spawn: true
       phantomworlds.command.phantomworlds.unload: true
       phantomworlds.command.phantomworlds.reload: true
@@ -77,20 +82,32 @@ permissions:
     default: op
     description: 'Ability to run /pw compatibility'
 
+  phantomworlds.command.phantomworlds.copy:
+    default: op
+    description: 'Ability to run /pw copy'
+
   phantomworlds.command.phantomworlds.debug:
     default: op
     description: 'Ability to run /pw debug'
 
+  phantomworlds.command.phantomworlds.delete:
+    default: op
+    description: 'Ability to run /pw delete'
+
   phantomworlds.command.phantomworlds.create:
     default: op
     description: 'Ability to run /pw create'
+
+  phantomworlds.command.phantomworlds.emptyworld:
+    default: op
+    description: 'Ability to run /pw emptyworld'
 
   phantomworlds.command.phantomworlds.import:
     default: op
     description: 'Ability to run /pw import'
 
   phantomworlds.command.phantomworlds.info:
-    default: true
+    default: op
     description: 'Ability to run /pw info'
 
   phantomworlds.command.phantomworlds.list:
@@ -121,12 +138,16 @@ permissions:
     default: op
     description: 'Ability to run /pw set portal'
 
+  phantomworlds.command.phantomworlds.set.transfer:
+    default: op
+    description: 'Ability to run /pw set transfer'
+
   phantomworlds.command.phantomworlds.set.whitelist:
     default: op
     description: 'Ability to run /pw set whitelist'
 
   phantomworlds.command.phantomworlds.teleport:
-    default: true
+    default: op
     description: 'Ability to run /pw teleport'
 
   phantomworlds.command.phantomworlds.teleport.other:

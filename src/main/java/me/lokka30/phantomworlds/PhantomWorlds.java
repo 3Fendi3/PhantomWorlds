@@ -35,6 +35,7 @@ import me.lokka30.phantomworlds.misc.Utils;
 import me.lokka30.phantomworlds.scheduler.BackupScheduler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.PortalType;
@@ -96,7 +97,7 @@ public class PhantomWorlds extends JavaPlugin {
    * This is reported in the 'pw info' command to inform the command sender of what MC versions that
    * this version of PW is designed to run on, and is therefore supported.
    */
-  public final String supportedServerVersions = "1.7.x and newer";
+  public final String supportedServerVersions = "1.21.11";
 
   /**
    * Frequently used vars.
@@ -364,31 +365,40 @@ public class PhantomWorlds extends JavaPlugin {
 
     final ArrayList<String> suggestions = new ArrayList<>();
 
+    suggestions.addAll(addTrueFalseValues("generateStructures"));
     suggestions.addAll(addTrueFalseValues("generatestructures"));
     suggestions.addAll(addTrueFalseValues("genstructures"));
     suggestions.addAll(addTrueFalseValues("structures"));
+    suggestions.addAll(addTrueFalseValues("spawnMobs"));
     suggestions.addAll(addTrueFalseValues("spawnmobs"));
     suggestions.addAll(addTrueFalseValues("mobs"));
+    suggestions.addAll(addTrueFalseValues("spawnAnimals"));
     suggestions.addAll(addTrueFalseValues("spawnanimals"));
     suggestions.addAll(addTrueFalseValues("animals"));
+    suggestions.addAll(addTrueFalseValues("keepSpawnInMemory"));
     suggestions.addAll(addTrueFalseValues("keepspawninmemory"));
     suggestions.addAll(addTrueFalseValues("spawninmemory"));
     suggestions.addAll(addTrueFalseValues("hardcore"));
+    suggestions.addAll(addTrueFalseValues("allowPvP"));
     suggestions.addAll(addTrueFalseValues("allowpvp"));
     suggestions.addAll(addTrueFalseValues("pvp"));
-    suggestions.addAll(addTrueFalseValues("difficulty"));
-    suggestions.addAll(addTrueFalseValues("diff"));
 
     suggestions.add("generator:");
     suggestions.add("gen:");
 
+    suggestions.add("generatorSettings:");
     suggestions.add("generatorsettings:");
     suggestions.add("gensettings:");
+    suggestions.add("generatorSettings:{\"biome\":\"minecraft:the_void\",\"layers\":[],\"features\":false,\"lakes\":false}");
 
-    suggestions.add("gamemode:ADVENTURE");
-    suggestions.add("gamemode:CREATIVE");
-    suggestions.add("gamemode:HARDCORE");
-    suggestions.add("gamemode:SURVIVAL");
+    for(final GameMode gameMode : GameMode.values()) {
+      suggestions.add("gamemode:" + gameMode.name());
+    }
+
+    for(final Difficulty difficulty : Difficulty.values()) {
+      suggestions.add("difficulty:" + difficulty.name());
+      suggestions.add("diff:" + difficulty.name());
+    }
 
     suggestions.add("seed:");
 
