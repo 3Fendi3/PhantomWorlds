@@ -92,7 +92,7 @@ public class PWCommand {
   @Execute(name = "emptyworld")
   @Permission("phantomworlds.command.phantomworlds.emptyworld")
   @Description("command.phantomworlds.help.emptyworld")
-  public void emptyWorld(@Context final CommandSender commandSender, @Arg("world name") final String name) {
+  public void emptyWorld(@Context final CommandSender commandSender, @Join("world name") final String name) {
 
     EmptyWorldCommand.onCommand(commandSender, name);
   }

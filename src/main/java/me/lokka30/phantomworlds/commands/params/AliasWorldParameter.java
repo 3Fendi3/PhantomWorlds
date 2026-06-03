@@ -19,8 +19,10 @@ package me.lokka30.phantomworlds.commands.params;
 
 import dev.rollczi.litecommands.argument.Argument;
 import dev.rollczi.litecommands.argument.parser.ParseResult;
-import dev.rollczi.litecommands.argument.resolver.ArgumentResolver;
+import dev.rollczi.litecommands.argument.resolver.ArgumentResolverBase;
+import dev.rollczi.litecommands.input.raw.RawInput;
 import dev.rollczi.litecommands.invocation.Invocation;
+import dev.rollczi.litecommands.range.Range;
 import dev.rollczi.litecommands.suggestion.SuggestionContext;
 import dev.rollczi.litecommands.suggestion.SuggestionResult;
 import me.lokka30.phantomworlds.PhantomWorlds;
@@ -29,6 +31,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,17 +40,31 @@ import java.util.Set;
  * @author creatorfromhell
  * @since 2.0.5.0
  */
-public class AliasWorldParameter extends ArgumentResolver<CommandSender, World> {
+public class AliasWorldParameter implements ArgumentResolverBase<CommandSender, World> {
 
   @Override
-  protected ParseResult<World> parse(final Invocation<CommandSender> invocation, final Argument<World> context, final String argument) {
+  public ParseResult<World> parse(final Invocation<CommandSender> invocation, final Argument<World> context, final RawInput input) {
 
-    final World world = PhantomWorlds.worldManager().findWorld(argument);
-    if(world == null) {
-      return ParseResult.failure("Invalid world name");
+    final List<String> arguments = input.seeAll();
+    for(int size = arguments.size(); size > 0; size--) {
+      final String argument = String.join(" ", arguments.subList(0, size));
+      final World world = PhantomWorlds.worldManager().findWorld(argument);
+
+      if(world == null) {
+        continue;
+      }
+
+      input.next(size);
+      return ParseResult.success(world);
     }
 
-    return ParseResult.success(world);
+    return ParseResult.failure("Invalid world name");
+  }
+
+  @Override
+  public Range getRange(final Argument<World> argument) {
+
+    return Range.moreThan(0);
   }
 
   @Override
