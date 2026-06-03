@@ -19,8 +19,11 @@ package me.lokka30.phantomworlds.commands.params;
 
 import dev.rollczi.litecommands.argument.Argument;
 import dev.rollczi.litecommands.argument.parser.ParseResult;
-import dev.rollczi.litecommands.argument.resolver.ArgumentResolver;
+import dev.rollczi.litecommands.argument.resolver.ArgumentResolverBase;
+import dev.rollczi.litecommands.input.raw.RawInput;
 import dev.rollczi.litecommands.invocation.Invocation;
+import dev.rollczi.litecommands.join.JoinArgument;
+import dev.rollczi.litecommands.range.Range;
 import dev.rollczi.litecommands.suggestion.SuggestionContext;
 import dev.rollczi.litecommands.suggestion.SuggestionResult;
 import me.lokka30.phantomworlds.commands.utils.WorldFolder;
@@ -37,10 +40,16 @@ import java.util.List;
  * @author creatorfromhell
  * @since 2.0.5.0
  */
-public class WorldFolderParameter extends ArgumentResolver<CommandSender, WorldFolder> {
+public class WorldFolderParameter implements ArgumentResolverBase<CommandSender, WorldFolder> {
 
   @Override
-  protected ParseResult<WorldFolder> parse(final Invocation<CommandSender> invocation, final Argument<WorldFolder> context, final String argument) {
+  public ParseResult<WorldFolder> parse(final Invocation<CommandSender> invocation, final Argument<WorldFolder> context, final RawInput input) {
+
+    if(!input.hasNext()) {
+      return ParseResult.failure("Invalid world directory specified!");
+    }
+
+    final String argument = readArgument(context, input);
 
     final File directory = Bukkit.getWorldContainer();
     final File worldDir = new File(directory, argument);
@@ -49,6 +58,33 @@ public class WorldFolderParameter extends ArgumentResolver<CommandSender, WorldF
       return ParseResult.failure("Invalid world directory specified!");
     }
     return ParseResult.success(new WorldFolder(argument));
+  }
+
+  @Override
+  public Range getRange(final Argument<WorldFolder> argument) {
+
+    if(argument instanceof JoinArgument<?> joinArgument) {
+      return Range.range(1, joinArgument.getLimit());
+    }
+
+    return Range.ONE;
+  }
+
+  private String readArgument(final Argument<WorldFolder> context, final RawInput input) {
+
+    if(context instanceof JoinArgument<?> joinArgument) {
+      final List<String> arguments = new ArrayList<>();
+      int limit = joinArgument.getLimit();
+
+      while(limit > 0 && input.hasNext()) {
+        arguments.add(input.next());
+        limit--;
+      }
+
+      return String.join(joinArgument.getSeparator(), arguments);
+    }
+
+    return input.next();
   }
 
   @Override

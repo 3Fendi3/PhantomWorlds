@@ -22,6 +22,7 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.description.Description;
 import dev.rollczi.litecommands.annotations.execute.Execute;
+import dev.rollczi.litecommands.annotations.join.Join;
 import dev.rollczi.litecommands.annotations.optional.OptionalArg;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import me.lokka30.phantomworlds.commands.sub.BackupCommand;
@@ -147,7 +148,15 @@ public class PWCommand {
   @Execute(name = "load")
   @Permission("phantomworlds.command.phantomworlds.load")
   @Description("command.phantomworlds.help.load")
-  public void load(@Context final CommandSender commandSender, @OptionalArg("world folder") final WorldFolder world) {
+  public void load(@Context final CommandSender commandSender) {
+
+    LoadCommand.onCommand(commandSender, null);
+  }
+
+  @Execute(name = "load")
+  @Permission("phantomworlds.command.phantomworlds.load")
+  @Description("command.phantomworlds.help.load")
+  public void load(@Context final CommandSender commandSender, @Join("world folder") final WorldFolder world) {
 
     LoadCommand.onCommand(commandSender, world);
   }
