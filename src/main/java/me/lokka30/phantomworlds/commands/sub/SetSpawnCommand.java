@@ -52,8 +52,6 @@ public class SetSpawnCommand {
       }
     }
 
-    final Player player = (Player)sender;
-
     final World finalWorld = (world == null)? ((Player)sender).getWorld() : world;
     final double finalX = (x == null)? ((Player)sender).getLocation().getX() : x;
     final double finalY = (y == null)? ((Player)sender).getLocation().getY() : y;

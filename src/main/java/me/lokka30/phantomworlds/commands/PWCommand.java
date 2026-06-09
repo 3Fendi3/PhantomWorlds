@@ -220,7 +220,23 @@ public class PWCommand {
   @Execute(name = "setspawn", aliases = { "ss" })
   @Permission("phantomworlds.command.phantomworlds.setspawn")
   @Description("command.phantomworlds.help.setspawn")
-  public void setspawn(@Context final CommandSender commandSender, @OptionalArg("x") final Double x, @OptionalArg("y") final Double y, @OptionalArg("z") final Double z, @OptionalArg("world") final World world, @OptionalArg("yaw") final Float yaw, @OptionalArg("pitch") final Float pitch) {
+  public void setspawn(@Context final CommandSender commandSender) {
+
+    SetSpawnCommand.onCommand(commandSender, null, null, null, null, null, null);
+  }
+
+  @Execute(name = "setspawn", aliases = { "ss" })
+  @Permission("phantomworlds.command.phantomworlds.setspawn")
+  @Description("command.phantomworlds.help.setspawn")
+  public void setspawn(@Context final CommandSender commandSender, @Arg("x") final Double x, @Arg("y") final Double y, @Arg("z") final Double z) {
+
+    SetSpawnCommand.onCommand(commandSender, x, y, z, null, null, null);
+  }
+
+  @Execute(name = "setspawn", aliases = { "ss" })
+  @Permission("phantomworlds.command.phantomworlds.setspawn")
+  @Description("command.phantomworlds.help.setspawn")
+  public void setspawn(@Context final CommandSender commandSender, @Arg("x") final Double x, @Arg("y") final Double y, @Arg("z") final Double z, @Arg("world") final World world, @OptionalArg("yaw") final Float yaw, @OptionalArg("pitch") final Float pitch) {
 
     SetSpawnCommand.onCommand(commandSender, x, y, z, world, yaw, pitch);
   }
